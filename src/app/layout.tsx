@@ -1,8 +1,9 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'] })
+import { GeistSans } from 'geist/font/sans'
+import Providers from './components/providers'
+import Navigation from './components/navigation'
+import { twMerge } from 'tailwind-merge'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -16,7 +17,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={GeistSans.className}>
+        <Providers>
+          <div className="flex flex-col min-h-screen">
+            <div
+              className={twMerge(
+                'flex-1 bg-white text-black',
+                'dark:bg-black dark:text-white'
+              )}
+            >
+              <Navigation />
+              <div className='container mx-auto'>{children}</div>
+            </div>
+          </div>
+        </Providers>
+      </body>
     </html>
   )
 }
