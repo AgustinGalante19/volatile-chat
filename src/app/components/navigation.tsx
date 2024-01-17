@@ -65,7 +65,7 @@ function Navigation() {
               height={20}
               alt="lightning logo"
             />
-            Volatile Chat
+            <span className="max-sm:hidden">Volatile Chat</span>
           </Link>
         </div>
         <div className="flex  items-center  gap-2">
