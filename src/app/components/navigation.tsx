@@ -11,16 +11,24 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { twMerge } from 'tailwind-merge'
+import Button from './ui/button'
+import UserMenu from './ui/user-menu'
+import useFakeSession from '../store/fakeSession'
 
 type ThemeVariant = 'light' | 'dark' | 'system'
-
 function Navigation() {
   const [mounted, setMounted] = useState(false)
   const { setTheme, theme: currentTheme } = useTheme()
 
+  const { changeTag, tag } = useFakeSession()
+
   useEffect(() => {
+    const tagItem = window.localStorage.getItem('vctag')
+    if (tagItem) {
+      changeTag(tagItem)
+    }
     setMounted(true)
-  }, [])
+  }, [changeTag])
 
   if (!mounted) return null
 
@@ -68,7 +76,21 @@ function Navigation() {
             <span className="max-sm:hidden">Volatile Chat</span>
           </Link>
         </div>
-        <div className="flex  items-center  gap-2">
+        <div className="flex items-center gap-2">
+          <div className="mx-2">
+            {tag && (
+              <UserMenu
+                tag={tag}
+                handleClickCopyTag={() =>
+                  window.navigator.clipboard.writeText(tag)
+                }
+                handleClickLogOut={() => {
+                  changeTag(null)
+                  window.localStorage.removeItem('vctag')
+                }}
+              />
+            )}
+          </div>
           <div className="flex px-4 border-r border-sec-gray/20 dark:border-sec-gray">
             <Link
               href="#repo"
